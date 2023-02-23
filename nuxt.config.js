@@ -42,4 +42,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+  privateRuntimeConfig: {
+    nodePrivateURL: process.env.NODE_BACKEND_URL,
+  },
 };
