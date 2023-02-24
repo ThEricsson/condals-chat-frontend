@@ -2,7 +2,7 @@
   <div>
     <form @submit.prevent="handleSubmit">
       <div class="form-group text-left">
-        <label for="topic">Topic</label>
+        <label for="topic">Topic:</label>
         <input
           class="form-control"
           v-model="form.topic"
@@ -13,7 +13,7 @@
         />
       </div>
       <div class="form-group text-left">
-        <label for="message">Missatge</label>
+        <label for="message">Missatge:</label>
         <input
           class="form-control"
           v-model="form.message"
@@ -23,8 +23,17 @@
           required
         />
       </div>
-      <button type="submit" class="btn btn-primary">Publicar</button>
+      <button type="submit" class="btn btn-primary">Publicar -></button>
     </form>
+    <div class="mt-3 border rounded bg-dark" v-if="response">
+      <div class="p-3 text-success text-left fw-bold">
+        <span
+          >condals-chat:~$ mosquitto_pub -h {{ host }} -t {{ form.topic }} -m
+          "{{ form.message }}"</span
+        >
+        <p>> {{ response }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -40,6 +49,8 @@ export default {
                topic: "",
                message: "",
             },
+            response: "",
+            host: process.env.NODE_BACKEND_URL.split(":")[1].substring(2)
         };
     },
     methods: {
@@ -55,7 +66,7 @@ export default {
                 // .get(`${process.env.NODE_BACKEND_URL}/publish?topic=${formData.get("topic")}&message=${formData.get("message")}`)
                 .get(`${process.env.NODE_BACKEND_URL}/publish?` + qs.stringify(formData))
                 .then(({data}) => {
-                    console.log(data)
+                    this.response = data.response
                 })
                 .catch((error) => {
                     console.log(error)

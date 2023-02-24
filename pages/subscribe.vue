@@ -1,3 +1,6 @@
 <template>
-  <h1>Subscribe</h1>
+  <div>
+    <h1>Subscribe</h1>
+    <SubscribeFom />
+  </div>
 </template>
