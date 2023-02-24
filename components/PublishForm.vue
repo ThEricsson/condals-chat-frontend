@@ -30,8 +30,7 @@
 
 <script lang="js">
 import axios from "axios"
-
-console.log(`Node URL: ${process.env.NODE_BACKEND_URL}`)
+import qs from 'querystring';
 
 export default {
     name: "PublishForm",
@@ -46,15 +45,15 @@ export default {
     methods: {
         //Al hacer clic en submit, la información se guarda en un objeto con las claves del formulario para despues enviarlo por axios.
         handleSubmit: async function(){
-            const formData = new FormData();
+            const formData = {}
 
-            for (let [key, value] of Object.entries(this.form)){
-                formData.append(key, value)
-
-            }
+            Object.entries(this.form).forEach(([key, value]) => {
+              formData[key] = value
+            });
 
             await axios
-                .get(`http://localhost:3700/publish`, formData)
+                // .get(`${process.env.NODE_BACKEND_URL}/publish?topic=${formData.get("topic")}&message=${formData.get("message")}`)
+                .get(`${process.env.NODE_BACKEND_URL}/publish?` + qs.stringify(formData))
                 .then(({data}) => {
                     console.log(data)
                 })
